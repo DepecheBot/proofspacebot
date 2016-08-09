@@ -22,42 +22,44 @@ LAST_UPDATE_ID = None
 BOT_DESCRIPTION = "Telegram bot for English courses"
 MESSAGE_START = 'Добро пожаловать! Я бот Proof Space. Пожалуйста, введите "I am ...", где "..." -- выданное Вам кодовое слово, чтобы я понял, из какой Вы группы.'
 MESSAGE_STOP = "Я умолкаю в этом чате! Наберите /start, чтобы вновь подписаться на рассылку анонсов."
-MESSAGE_HELP = "/schedule -- прислать расписание\n/card -- прислать реквизиты карты для оплаты\n/resources -- прислать учебные ресурсы\n/levels -- материалы для уровней\n/news -- повторить последние новости (анонсы)\n/chinesePod -- доступ к Chinese Pod"
-MESSAGE_START = "{}\nДоступные команды:\n{}".format(MESSAGE_START, MESSAGE_HELP)
-SCHEDULE_CMD = '/schedule'
-MAIN_KEYBOARD = '{"keyboard" : [["/schedule", "/card", "/resources"], ["/levels", "/news", "/chinesePod"]], "resize_keyboard" : true}'
-MAIN_KEYBOARD_ADMIN = '{"keyboard" : [["/schedule", "/card", "/resources"], ["/levels", "/news", "/chinesePod"], ["/user_list", "/google_sheet", "/send"]], "resize_keyboard" : true}'
-MESSAGE_HELP_ADMIN = MESSAGE_HELP + "\n/user_list - list of user\n/google_sheet - get google sheed link\n/send - send message to different users"
-#MESSAGE_HELP_ADMIN = MESSAGE_HELP + "\n/user_list - list of user\n/google_sheet - get google sheed link\n/send_broad <message> - send message to all users\n/send <user_id> <message> - send <message> to <user_id>"
-MESSAGE_ALARM = "Аларм! Аларм!"
-CHAT_ID_ALARM = 79031498
-BOT_ID = 136777319
-GROUP1_CHAT_LINK = 'Нажмите, чтобы добавиться в групповой чат: https://telegram.me/joinchat/BLXsyj9Qyw345JsKEVBFNQ'
-GROUP2_CHAT_LINK = 'Нажмите, чтобы добавиться в групповой чат: https://telegram.me/joinchat/BLXsyj95-Y2APYkG70_l7A'
-PROMO_MESSAGE = 'Человек, вот твой промокод: promo_{}_{}\n\nИспользуй его при заказе билета на любое из предстоящих мероприятий, чтобы получить скидку в 150 рублей (по отношению к самому дешевому билету). Срок действия промокода неограничен, но доступен он станет не сразу. Я оповещу тебя, когда он начнёт действовать.'
-NEWS_TEXT = "Пока новостей нет..."
-TEACHER_TEXT = "Ваш учитель: @christina19"
-RESULTS_TEXT = "Пока результатов нет"
-HOMEWORK_TEXT = "Пока домашнего задания нет"
-REGISTER_TEXT = 'Пожалуйста, введите выданное Вам кодовое слово, чтобы я понял, из какой Вы группы:'
+SCHEDULE_CMD = u'Расписание'
+CARD_CMD = u'Оплата'
+RESOURCES_CMD = u'Ресурсы'
+LEVELS_CMD = u'Материалы'
+NEWS_CMD = u'Новости'
+CHINESE_POD_CMD = 'Chinese Pod'
+CONFIRM_CMD = u'Подтвердить'
+CANCEL_CMD = u'Отмена'
+GROUP1_CMD = u'Группа 1'
+GROUP2_CMD = u'Группа 2'
+ALL_CMD = u'Все'
+USER_LIST_CMD = u'Пользователи'
+GOOGLE_SHEET_CMD = u'Гуглшит'
+SEND_CMD = u'Рассылка'
 HOMEWORK_CMD = '/homework'
 RESULTS_CMD = '/results'
 GROUP_CHAT_CMD = '/group_chat'
 TEACHER_CMD = '/teacher'
-NEWS_CMD = '/news'
-#SEND_BROAD_CMD = '/send_broad'
-SEND_MSG_CMD = '/send'
 START_CMD = '/start'
 STOP_CMD = '/stop'
-SECRET_LIST_CMD = '/secret_list'
-USER_LIST_CMD = '/user_list'
-GOOGLE_SHEET_CMD = '/google_sheet'
-GOOGLE_SHEET = 'https://docs.google.com/spreadsheets/d/1Lso2rRoop-UzzTloC1wEZM-G4g3Iwg-28LKgHY8ffP0'
 HELLO_CMD = '/hello'
 HELP_CMD = '/help'
 NEXT_CMD = '/next'
 GROUP_CHAT_CMD = '/group_chat'
-PROMO_CMD = '/promo'
+MAIN_KEYBOARD = u'{{"keyboard" : [["{}", "{}", "{}"], ["{}", "{}", "{}"]], "resize_keyboard" : true}}'.format(SCHEDULE_CMD, CARD_CMD, RESOURCES_CMD, LEVELS_CMD, NEWS_CMD, CHINESE_POD_CMD)
+MAIN_KEYBOARD_ADMIN = u'{{"keyboard" : [["{}", "{}", "{}"], ["{}", "{}", "{}"], ["{}", "{}", "{}"]], "resize_keyboard" : true}}'.format(SCHEDULE_CMD, CARD_CMD, RESOURCES_CMD, LEVELS_CMD, NEWS_CMD, CHINESE_POD_CMD, USER_LIST_CMD, GOOGLE_SHEET_CMD, SEND_CMD)
+MESSAGE_HELP = u"{} -- прислать расписание\n{} -- прислать реквизиты карты для оплаты\n{} -- прислать учебные ресурсы\n{} -- материалы для уровней\n{} -- повторить последние новости (анонсы)\n{} -- доступ к Chinese Pod".format(SCHEDULE_CMD, CARD_CMD, RESOURCES_CMD, LEVELS_CMD, NEWS_CMD, CHINESE_POD_CMD)
+MESSAGE_HELP_ADMIN = MESSAGE_HELP + u"\n{} - list of user\n{} - get google sheet link\n{} - send message to different users".format(USER_LIST_CMD, GOOGLE_SHEET_CMD, SEND_CMD)
+MESSAGE_ALARM = "Аларм! Аларм!"
+CHAT_ID_ALARM = 79031498
+ADMIN_PASS = 'I am god'
+GROUP1_CHAT_LINK = 'Нажмите, чтобы добавиться в групповой чат: https://telegram.me/joinchat/BLXsyj9Qyw345JsKEVBFNQ'
+GROUP2_CHAT_LINK = 'Нажмите, чтобы добавиться в групповой чат: https://telegram.me/joinchat/BLXsyj95-Y2APYkG70_l7A'
+NEWS_TEXT = "Пока новостей нет..."
+RESULTS_TEXT = "Пока результатов нет"
+HOMEWORK_TEXT = "Пока домашнего задания нет"
+REGISTER_TEXT = 'Пожалуйста, введите выданное Вам кодовое слово, чтобы я понял, из какой Вы группы:'
+GOOGLE_SHEET = 'https://docs.google.com/spreadsheets/d/1Lso2rRoop-UzzTloC1wEZM-G4g3Iwg-28LKgHY8ffP0'
 TELEGRAM_MSG_CHANNEL = '#telegram-messages'
 
 
@@ -294,13 +296,13 @@ def run(bot, logfile, slackbot):
 
         if state.startswith("REGISTER_STATE"):
             if len(state.split()) == 1:
-                reply_markup = '{"keyboard" : [["/confirm"]], "resize_keyboard" : true, "one_time_keyboard" : true}'
+                reply_markup = u'{{"keyboard" : [["{}"]], "resize_keyboard" : true, "one_time_keyboard" : true}}'.format(CONFIRM_CMD)
                 realname = u"{} {}".format(message.from_user.first_name, message.from_user.last_name)
-                text = u"Ваше имя и фамилия в Телеграме: {}. Подтвердите его (/confirm) или введите Вашe имя и фамилию для использования в этом боте:".format(realname)
+                text = u'Ваше имя и фамилия в Телеграме: {}. Подтвердите его ("{}") или введите Вашe имя и фамилию для использования в этом боте:'.format(realname, CONFIRM_CMD)
                 bot.sendMessage(chat_id=message.chat_id, text=text, reply_markup=reply_markup)
                 state = "REGISTER_STATE password"
             elif len(state.split()) == 2:
-                if message.text != "/confirm":
+                if message.text != CONFIRM_CMD:
                     realname = message.text
                 bot.sendMessage(chat_id=message.chat_id, text=u"Ваше имя: {}".format(realname), reply_markup=telegram.ReplyKeyboardHide())
 
@@ -333,10 +335,10 @@ def run(bot, logfile, slackbot):
 
         elif state == "MAIN_STATE":
             if message.left_chat_member != None:
-                if message.left_chat_member.id == BOT_ID:
+                if message.left_chat_member.id == bot.getMe().id:
                     deleted = True
             elif message.new_chat_member != None:
-                if message.new_chat_member.id == BOT_ID:
+                if message.new_chat_member.id == bot.getMe().id:
                     deleted = False
             elif message.text == HELP_CMD:
                     bot.sendMessage(chat_id=message.chat_id, \
@@ -356,7 +358,7 @@ def run(bot, logfile, slackbot):
                 elif group_id == 'admin' or group_id == 'teacher':
                     bot.sendMessage(chat_id=message.chat_id, text=GROUP1_CHAT_LINK, reply_markup=reply_markup)
                     bot.sendMessage(chat_id=message.chat_id, text=GROUP2_CHAT_LINK, reply_markup=reply_markup)
-            elif message.text == 'I am god':
+            elif message.text == ADMIN_PASS:
                 bot.sendMessage(chat_id=message.chat_id, text=u'Вы админ!', reply_markup=MAIN_KEYBOARD_ADMIN)
                 group_id = 'admin'
             elif message.text == NEWS_CMD:
@@ -375,15 +377,15 @@ def run(bot, logfile, slackbot):
                 bot.sendMessage(chat_id=message.chat_id, text=HOMEWORK_TEXT, reply_markup=reply_markup)
             elif message.text == RESULTS_CMD:
                 bot.sendMessage(chat_id=message.chat_id, text=RESULTS_TEXT, reply_markup=reply_markup)
-            elif message.text == "/card":
+            elif message.text == CARD_CMD:
                 bot.sendMessage(chat_id=message.chat_id, text=u'Номер карты: 4276 5500 6960 1089, получатель: Климовская Динара Омирхановна. Сбербанк.\nПожалуйста, скиньте скрин платежа, как отправите перевод)', reply_markup=reply_markup)
-            elif message.text == "/chinesePod":
+            elif message.text == CHINESE_POD_CMD:
                 bot.sendMessage(chat_id=message.chat_id, text=u'Доступ к Chinese Pod:\nlogin - mousebanastro@gmail.com\npassword - lagou', reply_markup=reply_markup)
-            elif message.text == "/resources":
+            elif message.text == RESOURCES_CMD:
                 bot.sendMessage(chat_id=message.chat_id, text=u'Ресурсы для обучения: busuu.com. Крутые приложения: memsrise, pleco, trainchinese', reply_markup=reply_markup)
-            elif message.text == "/levels":
+            elif message.text == LEVELS_CMD:
                 bot.sendMessage(chat_id=message.chat_id, text=u'https://yadi.sk/d/NvR0AXDhsM7iK видео уровень 2\nhttps://yadi.sk/d/UZQt40fKtDLpW видео уровень 1', reply_markup=reply_markup)
-            elif message.text.lower() == SCHEDULE_CMD:
+            elif message.text == SCHEDULE_CMD:
                 #bot.sendMessage(chat_id=message.chat_id, text="Расписание не установлено", reply_markup=reply_markup)
                 #if group_id == "group1":
                 #    bot.sendMessage(chat_id=message.chat_id, text="Расписание не установлено", reply_markup=reply_markup)
@@ -395,9 +397,9 @@ def run(bot, logfile, slackbot):
                 schedule_message = get_schedule_message()
                 bot.sendMessage(chat_id=message.chat_id, text=schedule_message, reply_markup=reply_markup)
 
-            elif (group_id == "admin" or group_id == "teacher") and message.text == "/send" :
+            elif (group_id == "admin" or group_id == "teacher") and message.text == SEND_CMD:
                 state = "SEND_STATE"
-                reply_markup = '{"keyboard" : [["/news", "/homework", "/cancel"]], "resize_keyboard" : true}'
+                reply_markup = u'{{"keyboard" : [["{}", "{}", "{}"]], "resize_keyboard" : true}}'.format(NEWS_CMD, HOMEWORK_CMD, CANCEL_CMD)
                 bot.sendMessage(chat_id=message.chat_id, text="Отослать новость (/news) или домашнее задание (/homework)?", reply_markup=reply_markup)
             elif ((group_id == "admin") or (group_id == 'teacher')) and message.text == USER_LIST_CMD:
                 print_userlist(bot, message)
@@ -407,54 +409,54 @@ def run(bot, logfile, slackbot):
                 pass
 
         elif state.startswith("SEND_STATE"):
-            if message.text == "/cancel":
+            if message.text == CANCEL_CMD:
                 bot.sendMessage(chat_id=message.chat_id, text="Рассылка отменена", reply_markup=reply_markup)
                 state = "MAIN_STATE"
             elif len(state.split()) == 1:
-                if message.text == "/news":
+                if message.text == NEWS_CMD:
                     state += " news"
-                    reply_markup = '{"keyboard" : [["/group1", "/group2", "/all", "/cancel"]], "resize_keyboard" : true}'
-                    bot.sendMessage(chat_id=message.chat_id, text="Выберите группу для рассылки:", reply_markup=reply_markup)
-                elif message.text == "/homework":
+                    reply_markup = u'{{"keyboard" : [["{}", "{}", "{}", "{}"]], "resize_keyboard" : true}}'.format(GROUP1_CMD, GROUP2_CMD, ALL_CMD, CANCEL_CMD)
+                    bot.sendMessage(chat_id=message.chat_id, text=u"Выберите группу для рассылки:", reply_markup=reply_markup)
+                elif message.text == HOMEWORK_CMD:
                     state += " homework"
-                    reply_markup = '{"keyboard" : [["/group1", "/group2", "/all", "/cancel"]], "resize_keyboard" : true}'
-                    bot.sendMessage(chat_id=message.chat_id, text="Выберите группу для рассылки:", reply_markup=reply_markup)
+                    reply_markup = u'{{"keyboard" : [["{}", "{}", "{}", "{}"]], "resize_keyboard" : true}}'.format(GROUP1_CMD, GROUP2_CMD, ALL_CMD, CANCEL_CMD)
+                    bot.sendMessage(chat_id=message.chat_id, text=u"Выберите группу для рассылки:", reply_markup=reply_markup)
                 else:
-                    reply_markup = '{"keyboard" : [["/news", "/homework", "/cancel"]], "resize_keyboard" : true}'
-                    bot.sendMessage(chat_id=message.chat_id, text="Отослать новость (/news) или домашнее задание (/homework)?", reply_markup=reply_markup)
+                    reply_markup = u'{{"keyboard" : [["{}", "{}", "{}"]], "resize_keyboard" : true}}'.format(NEWS_CMD, HOMEWORK_CMD, CANCEL_CMD)
+                    bot.sendMessage(chat_id=message.chat_id, text=u'Отослать новость или домашнее задание?', reply_markup=reply_markup)
             elif len(state.split()) == 2:
-                if message.text == "/group1":
+                if message.text == GROUP1_CMD:
                     state += " group1"
-                    reply_markup = '{"keyboard" : [["/cancel"]], "resize_keyboard" : true}'
-                    bot.sendMessage(chat_id=message.chat_id, text="Введите сообщение для рассылки (или файл/картинку):", reply_markup=reply_markup)
-                elif message.text == "/group2":
+                    reply_markup = u'{{"keyboard" : [["{}"]], "resize_keyboard" : true}}'.format(CANCEL_CMD)
+                    bot.sendMessage(chat_id=message.chat_id, text=u"Введите сообщение для рассылки (или файл/картинку):", reply_markup=reply_markup)
+                elif message.text == GROUP2_CMD:
                     state += " group2"
-                    reply_markup = '{"keyboard" : [["/cancel"]], "resize_keyboard" : true}'
-                    bot.sendMessage(chat_id=message.chat_id, text="Введите сообщение для рассылки (или файл/картинку):", reply_markup=reply_markup)
-                elif message.text == "/all":
+                    reply_markup = u'{{"keyboard" : [["{}"]], "resize_keyboard" : true}}'.format(CANCEL_CMD)
+                    bot.sendMessage(chat_id=message.chat_id, text=u"Введите сообщение для рассылки (или файл/картинку):", reply_markup=reply_markup)
+                elif message.text == ALL_CMD:
                     state += " all"
-                    reply_markup = '{"keyboard" : [["/cancel"]], "resize_keyboard" : true}'
-                    bot.sendMessage(chat_id=message.chat_id, text="Введите сообщение для рассылки (или файл/картинку):", reply_markup=reply_markup)
+                    reply_markup = u'{{"keyboard" : [["{}"]], "resize_keyboard" : true}}'.format(CANCEL_CMD)
+                    bot.sendMessage(chat_id=message.chat_id, text=u"Введите сообщение для рассылки (или файл/картинку):", reply_markup=reply_markup)
                 else:
-                    reply_markup = '{"keyboard" : [["/group1", "/group2", "/all", "/cancel"]], "resize_keyboard" : true}'
-                    bot.sendMessage(chat_id=message.chat_id, text="Выберите группу для рассылки:", reply_markup=reply_markup)
+                    reply_markup = u'{{"keyboard" : [["{}", "{}", "{}", "{}"]], "resize_keyboard" : true}}'.format(GROUP1_CMD, GROUP2_CMD, ALL_CMD, CANCEL_CMD)
+                    bot.sendMessage(chat_id=message.chat_id, text=u"Выберите группу для рассылки:", reply_markup=reply_markup)
             elif len(state.split()) == 3:
                 state += " " + str(message.message_id)
-                reply_markup = '{"keyboard" : [["/confirm", "/cancel"]], "resize_keyboard" : true}'
-                bot.sendMessage(chat_id=message.chat_id, text="Подтвердите отправку (/confirm):", reply_markup=reply_markup)
+                reply_markup = u'{{"keyboard" : [["{}", "{}"]], "resize_keyboard" : true}}'.format(CONFIRM_CMD, CANCEL_CMD)
+                bot.sendMessage(chat_id=message.chat_id, text=u"Подтвердите отправку:", reply_markup=reply_markup)
             elif len(state.split()) == 4:
-                if message.text == "/confirm":
+                if message.text == CONFIRM_CMD:
                     _, _, group, message_id = state.split()
                     forward_broad(bot, from_chat_id=message.chat_id, message_id=message_id, group=group)
                     # Update news after broadcasting
                     with db_session:
                         chat = Chat.get(chat_id=message.chat.id)
                         news = chat.news
-                    bot.sendMessage(chat_id=message.chat_id, text="Отправлено!", reply_markup=reply_markup)
+                    bot.sendMessage(chat_id=message.chat_id, text=u"Отправлено!", reply_markup=reply_markup)
                     state = "MAIN_STATE"
                 else:
-                    reply_markup = '{"keyboard" : [["/confirm", "/cancel"]], "resize_keyboard" : true}'
-                    bot.sendMessage(chat_id=message.chat_id, text="Подтвердите отправку (/confirm):", reply_markup=reply_markup)
+                    reply_markup = u'{"keyboard" : [["{}", "{}"]], "resize_keyboard" : true}'.format(CONFIRM_CMD, CANCEL_CMD)
+                    bot.sendMessage(chat_id=message.chat_id, text="Подтвердите отправку:", reply_markup=reply_markup)
 
 
         with db_session:
