@@ -38,6 +38,11 @@ USER_LIST_CMD = u'Пользователи'
 GOOGLE_SHEET_CMD = u'Гуглшит'
 SEND_CMD = u'Рассылка'
 HELP_CMD = u'Помощь'
+STUFF_PIMSLER_CMD = u'Пимслер'
+STUFF_VIDEO_CMD = u'Видео'
+STUFF_RESOURCES_CMD = u'Ресурсы'
+STUFF_BOOK_CMD = u'Книга по ключам'
+BACK_CMD = u'Назад'
 HOMEWORK_CMD = '/homework'
 RESULTS_CMD = '/results'
 GROUP_CHAT_CMD = '/group_chat'
@@ -398,18 +403,10 @@ def run(bot, logfile, slackbot):
             elif message.text == CHINESE_POD_CMD:
                 bot.sendMessage(chat_id=message.chat_id, text=u'Доступ к Chinese Pod:\nlogin - mousebanastro@gmail.com\npassword - lagou', reply_markup=reply_markup)
             elif message.text == STUFF_CMD:
-                #bot.sendMessage(chat_id=message.chat_id, text=u'Пимслер (https://yadi.sk/d/7E_5aVZLt5Nwf)', reply_markup=reply_markup)
-                #bot.sendMessage(chat_id=message.chat_id, text=u'Видео: https://yadi.sk/d/UZQt40fKtDLpW -- уровень 1\nhttps://yadi.sk/d/NvR0AXDhsM7iK -- уровень 2', reply_markup=reply_markup)
-                #bot.sendMessage(chat_id=message.chat_id, text=u'Ресурсы для обучения: busuu.com. Крутые приложения: memsrise, pleco, trainchinese', reply_markup=reply_markup)
-                #bot.sendMessage(chat_id=message.chat_id, text=u'Книга по ключам (https://vk.com/doc326978802_437453577?hash=0a34fc79dbdf96e3b8&dl=09475a5fd4ad299d57)', reply_markup=reply_markup)
-                bot.sendMessage(chat_id=message.chat_id, text=u'Пимслер (https://yadi.sk/d/7E_5aVZLt5Nwf)\n\
-Видео: \n  https://yadi.sk/d/UZQt40fKtDLpW -- уровень 1\n  https://yadi.sk/d/NvR0AXDhsM7iK -- уровень 2\n\
-Ресурсы для обучения: busuu.com. Крутые приложения: memsrise, pleco, trainchinese\n\
-Книга по ключам (https://vk.com/doc326978802_437453577?hash=0a34fc79dbdf96e3b8&dl=09475a5fd4ad299d57)', reply_markup=reply_markup)
-            elif message.text == RESOURCES_CMD:
-                bot.sendMessage(chat_id=message.chat_id, text=u'Ресурсы для обучения: busuu.com. Крутые приложения: memsrise, pleco, trainchinese', reply_markup=reply_markup)
-            elif message.text == LEVELS_CMD:
-                bot.sendMessage(chat_id=message.chat_id, text=u'https://yadi.sk/d/UZQt40fKtDLpW -- видео уровень 1\nhttps://yadi.sk/d/NvR0AXDhsM7iK -- видео уровень 2', reply_markup=reply_markup)
+                reply_markup = u'{{"keyboard" : [["{}", "{}", "{}"], ["{}", "{}"]], "resize_keyboard" : true}}'.\
+                               format(STUFF_PIMSLER_CMD, STUFF_VIDEO_CMD, STUFF_RESOURCES_CMD, STUFF_BOOK_CMD, BACK_CMD)
+                bot.sendMessage(chat_id=message.chat_id, text=u'Выберите материал:', reply_markup=reply_markup)
+                state = 'STUFF_STATE'
             elif message.text == SCHEDULE_CMD:
                 #bot.sendMessage(chat_id=message.chat_id, text="Расписание не установлено", reply_markup=reply_markup)
                 #if group_id == "group1":
@@ -485,8 +482,27 @@ def run(bot, logfile, slackbot):
 
 
         elif state.startswith('STUFF_STATE'):
-            if message.text == u'':
-                pass
+            if message.text == STUFF_PIMSLER_CMD:
+                reply_markup = u'{{"keyboard" : [["{}", "{}", "{}"], ["{}", "{}"]], "resize_keyboard" : true}}'.\
+                               format(STUFF_PIMSLER_CMD, STUFF_VIDEO_CMD, STUFF_RESOURCES_CMD, STUFF_BOOK_CMD, BACK_CMD)
+                bot.sendMessage(chat_id=message.chat_id, text=u'Пимслер -- https://yadi.sk/d/7E_5aVZLt5Nwf', reply_markup=reply_markup)
+            elif message.text == STUFF_VIDEO_CMD:
+                reply_markup = u'{{"keyboard" : [["{}", "{}", "{}"], ["{}", "{}"]], "resize_keyboard" : true}}'.\
+                               format(STUFF_PIMSLER_CMD, STUFF_VIDEO_CMD, STUFF_RESOURCES_CMD, STUFF_BOOK_CMD, BACK_CMD)
+                bot.sendMessage(chat_id=message.chat_id, text=u'Видео: \n  https://yadi.sk/d/UZQt40fKtDLpW -- уровень 1\n  https://yadi.sk/d/NvR0AXDhsM7iK -- уровень 2', reply_markup=reply_markup)
+            elif message.text == STUFF_RESOURCES_CMD:
+                reply_markup = u'{{"keyboard" : [["{}", "{}", "{}"], ["{}", "{}"]], "resize_keyboard" : true}}'.\
+                               format(STUFF_PIMSLER_CMD, STUFF_VIDEO_CMD, STUFF_RESOURCES_CMD, STUFF_BOOK_CMD, BACK_CMD)
+                bot.sendMessage(chat_id=message.chat_id, text=u'Ресурсы для обучения: busuu.com. Крутые приложения: memsrise, pleco, trainchinese', reply_markup=reply_markup)
+            elif message.text == STUFF_BOOK_CMD:
+                reply_markup = u'{{"keyboard" : [["{}", "{}", "{}"], ["{}", "{}"]], "resize_keyboard" : true}}'.\
+                               format(STUFF_PIMSLER_CMD, STUFF_VIDEO_CMD, STUFF_RESOURCES_CMD, STUFF_BOOK_CMD, BACK_CMD)
+                bot.sendMessage(chat_id=message.chat_id, text=u'Книга по ключам (https://vk.com/doc326978802_437453577?hash=0a34fc79dbdf96e3b8&dl=09475a5fd4ad299d57)', reply_markup=reply_markup)
+            elif message.text == BACK_CMD:
+                #reply_markup = MAIN_KEYBOARD_ADMIN if ((group_id == "admin") or (group_id == 'teacher')) else MAIN_KEYBOARD
+                bot.sendMessage(chat_id=message.chat_id, text=u'Выберите команду:', reply_markup=reply_markup)
+                state = 'MAIN_STATE'
+
 
         with db_session:
             chat = Chat.get(chat_id=message.chat.id)
