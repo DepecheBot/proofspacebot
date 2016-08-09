@@ -24,6 +24,7 @@ class Chat(botDB.Entity):
     deleted = Required(bool)
     group_id = Optional(str)
     realname = Optional(str)
+    news = Optional(str)
 
     # State
     state = Required(str)

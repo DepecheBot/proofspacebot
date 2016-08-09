@@ -20,12 +20,13 @@ from db import botDB, Chat
 
 LAST_UPDATE_ID = None
 BOT_DESCRIPTION = "Telegram bot for English courses"
-MESSAGE_START = 'Добро пожаловать! Я бот UBC English. Пожалуйста, введите "I am ...", где "..." -- выданное Вам кодовое слово, чтобы я понял, из какой Вы группы.'
+MESSAGE_START = 'Добро пожаловать! Я бот Proof Space. Пожалуйста, введите "I am ...", где "..." -- выданное Вам кодовое слово, чтобы я понял, из какой Вы группы.'
 MESSAGE_STOP = "Я умолкаю в этом чате! Наберите /start, чтобы вновь подписаться на рассылку анонсов."
-MESSAGE_HELP = "/homework -- прислать домашнее задание\n/schedule -- прислать расписание\n/results -- прислать результат тестирования\n/teacher -- чат с учителем\n/group_chat -- чат с одногруппниками\n/news -- прислать последние новости"
+MESSAGE_HELP = "/schedule -- прислать расписание\n/card -- прислать реквизиты карты для оплаты\n/resources -- прислать учебные ресурсы\n/levels -- материалы для уровней\n/news -- повторить последние новости (анонсы)\n/chinesePod -- доступ к Chinese Pod"
 MESSAGE_START = "{}\nДоступные команды:\n{}".format(MESSAGE_START, MESSAGE_HELP)
-MAIN_KEYBOARD = '{"keyboard" : [["/homework", "/schedule", "/results"], ["/teacher", "/group_chat", "/news"]], "resize_keyboard" : true}'
-MAIN_KEYBOARD_ADMIN = '{"keyboard" : [["/homework", "/schedule", "/results"], ["/teacher", "/group_chat", "/news"], ["/user_list", "/google_sheet", "/send"]], "resize_keyboard" : true}'
+SCHEDULE_CMD = '/schedule'
+MAIN_KEYBOARD = '{"keyboard" : [["/schedule", "/card", "/resources"], ["/levels", "/news", "/chinesePod"]], "resize_keyboard" : true}'
+MAIN_KEYBOARD_ADMIN = '{"keyboard" : [["/schedule", "/card", "/resources"], ["/levels", "/news", "/chinesePod"], ["/user_list", "/google_sheet", "/send"]], "resize_keyboard" : true}'
 MESSAGE_HELP_ADMIN = MESSAGE_HELP + "\n/user_list - list of user\n/google_sheet - get google sheed link\n/send - send message to different users"
 #MESSAGE_HELP_ADMIN = MESSAGE_HELP + "\n/user_list - list of user\n/google_sheet - get google sheed link\n/send_broad <message> - send message to all users\n/send <user_id> <message> - send <message> to <user_id>"
 MESSAGE_ALARM = "Аларм! Аларм!"
@@ -40,7 +41,6 @@ RESULTS_TEXT = "Пока результатов нет"
 HOMEWORK_TEXT = "Пока домашнего задания нет"
 REGISTER_TEXT = 'Пожалуйста, введите выданное Вам кодовое слово, чтобы я понял, из какой Вы группы:'
 HOMEWORK_CMD = '/homework'
-SCHEDULE_CMD = '/schedule'
 RESULTS_CMD = '/results'
 GROUP_CHAT_CMD = '/group_chat'
 TEACHER_CMD = '/teacher'
@@ -52,7 +52,7 @@ STOP_CMD = '/stop'
 SECRET_LIST_CMD = '/secret_list'
 USER_LIST_CMD = '/user_list'
 GOOGLE_SHEET_CMD = '/google_sheet'
-GOOGLE_SHEET = 'https://docs.google.com/spreadsheets/d/1HfJqGuRlTJB0yL3WRodMlRKX7kZoE7MyqLV6Wdk1AFE'
+GOOGLE_SHEET = 'https://docs.google.com/spreadsheets/d/1Lso2rRoop-UzzTloC1wEZM-G4g3Iwg-28LKgHY8ffP0'
 HELLO_CMD = '/hello'
 HELP_CMD = '/help'
 NEXT_CMD = '/next'
@@ -67,7 +67,7 @@ def main():
 
     parser = argparse.ArgumentParser(description=BOT_DESCRIPTION)
     parser.add_argument("--logfile", type=str, default='log', help="Path to log file")
-    parser.add_argument("--dbfile", type=str, default='ubcenglish.sqlite', help="Path to sqlite DB file")
+    parser.add_argument("--dbfile", type=str, default='proofspace.sqlite', help="Path to sqlite DB file")
     args = parser.parse_args()
 
     botDB.bind('sqlite', args.dbfile, create_db=True)
@@ -108,7 +108,7 @@ def main():
 
 def log_update(update, logfile, slackbot, primary_id):
     message = update.message
-    slack_text = u'{} {} ({}, GSid: {}): {{}}\n'.format(message.from_user.first_name,
+    slack_text = u'Proof Space. {} {} ({}, GSid: {}): {{}}\n'.format(message.from_user.first_name,
                                                         message.from_user.last_name,
                                                         message.from_user.name,
                                                         primary_id)
@@ -164,6 +164,7 @@ def forward_broad(bot, from_chat_id, message_id, group):
                 #reply_markup = MAIN_KEYBOARD_ADMIN if is_admin else MAIN_KEYBOARD
                 #bot.sendMessage(chat_id=chat.chat_id, text=text)#, reply_markup=reply_markup)
                 bot.forwardMessage(chat_id=chat.chat_id, from_chat_id=from_chat_id, message_id=message_id)
+                chat.news = '{} {}'.format(from_chat_id, message_id)
             except telegram.TelegramError as error:
                 print "TelegramError", error
 
@@ -263,7 +264,7 @@ def send_message(bot, message):
 
 
 def get_schedule_message():
-    DOC = "{}/export?format=tsv&id={}&gid={}".format(GOOGLE_SHEET, '1eBh9w0WRRJleBQd7eVHFKBQgc5V_w0TYymMkKHL6598', '1758330787')
+    DOC = "{}/export?format=tsv&id={}&gid={}".format(GOOGLE_SHEET, '1eBh9w0WRRJleBQd7eVHFKBQgc5V_w0TYymMkKHL6598', '0')
     CMD = "curl -s '{}' | sed -e 's/[[:space:]]$//g' | awk 'NF > 1 {{print }}'".format(DOC)
     return os.popen(CMD).read()
 
@@ -280,8 +281,8 @@ def run(bot, logfile, slackbot):
         message = update.message
 
         chat = update_chat_db(message)
-        primary_id, group_id, state, silent_mode, deleted, realname = \
-            chat.primary_id, chat.group_id, chat.state, chat.silent_mode, chat.deleted, chat.realname
+        primary_id, group_id, state, silent_mode, deleted, realname, news = \
+            chat.primary_id, chat.group_id, chat.state, chat.silent_mode, chat.deleted, chat.realname, chat.news
 
         log_update(update, logfile, slackbot, primary_id)
 
@@ -303,8 +304,11 @@ def run(bot, logfile, slackbot):
                     realname = message.text
                 bot.sendMessage(chat_id=message.chat_id, text=u"Ваше имя: {}".format(realname), reply_markup=telegram.ReplyKeyboardHide())
 
-                bot.sendMessage(chat_id=message.chat_id, text=REGISTER_TEXT)
-                state = "REGISTER_STATE password realname"
+                #bot.sendMessage(chat_id=message.chat_id, text=REGISTER_TEXT)
+                #state = "REGISTER_STATE password realname"
+
+                bot.sendMessage(chat_id=message.chat_id, text=u'Вы в группе 1! Выберите команду:', reply_markup=reply_markup)
+                state = "MAIN_STATE"
             elif len(state.split()) == 3:
                 password = message.text
                 if password == "umbrella":
@@ -352,24 +356,45 @@ def run(bot, logfile, slackbot):
                 elif group_id == 'admin' or group_id == 'teacher':
                     bot.sendMessage(chat_id=message.chat_id, text=GROUP1_CHAT_LINK, reply_markup=reply_markup)
                     bot.sendMessage(chat_id=message.chat_id, text=GROUP2_CHAT_LINK, reply_markup=reply_markup)
+            elif message.text == 'I am god':
+                bot.sendMessage(chat_id=message.chat_id, text=u'Вы админ!', reply_markup=MAIN_KEYBOARD_ADMIN)
+                group_id = 'admin'
             elif message.text == NEWS_CMD:
                 #news_message = get_news_message()
-                #bot.sendMessage(chat_id=message.chat_id, text=news_message, reply_markup=reply_markup)
-                bot.forwardMessage(chat_id=message.chat_id, from_chat_id=237288447, message_id=1468)
+                if news == '':
+                    bot.sendMessage(chat_id=message.chat_id, text=u"Пока никаких новостей...", reply_markup=reply_markup)
+                else:
+                    from_chat_id, message_id = map(int, news.split())
+                    try:
+                        bot.forwardMessage(chat_id=message.chat_id, from_chat_id=from_chat_id, message_id=message_id)
+                    except telegram.TelegramError as error:
+                        print "TelegramError", error
             elif message.text == TEACHER_CMD:
                 bot.sendMessage(chat_id=message.chat_id, text=TEACHER_TEXT, reply_markup=reply_markup)
             elif message.text == HOMEWORK_CMD:
                 bot.sendMessage(chat_id=message.chat_id, text=HOMEWORK_TEXT, reply_markup=reply_markup)
             elif message.text == RESULTS_CMD:
                 bot.sendMessage(chat_id=message.chat_id, text=RESULTS_TEXT, reply_markup=reply_markup)
+            elif message.text == "/card":
+                bot.sendMessage(chat_id=message.chat_id, text=u'Номер карты: 4276 5500 6960 1089, получатель: Климовская Динара Омирхановна. Сбербанк.\nПожалуйста, скиньте скрин платежа, как отправите перевод)', reply_markup=reply_markup)
+            elif message.text == "/chinesePod":
+                bot.sendMessage(chat_id=message.chat_id, text=u'Доступ к Chinese Pod:\nlogin - mousebanastro@gmail.com\npassword - lagou', reply_markup=reply_markup)
+            elif message.text == "/resources":
+                bot.sendMessage(chat_id=message.chat_id, text=u'Ресурсы для обучения: busuu.com. Крутые приложения: memsrise, pleco, trainchinese', reply_markup=reply_markup)
+            elif message.text == "/levels":
+                bot.sendMessage(chat_id=message.chat_id, text=u'https://yadi.sk/d/NvR0AXDhsM7iK видео уровень 2\nhttps://yadi.sk/d/UZQt40fKtDLpW видео уровень 1', reply_markup=reply_markup)
             elif message.text.lower() == SCHEDULE_CMD:
-                if group_id == "group1":
-                    bot.sendMessage(chat_id=message.chat_id, text="Среда, с 18:00 до 19:30", reply_markup=reply_markup)
-                elif group_id == "group2":
-                    bot.sendMessage(chat_id=message.chat_id, text="Среда, с 19:30 до 20:00", reply_markup=reply_markup)
-                else:
-                    schedule_message = get_schedule_message()
-                    bot.sendMessage(chat_id=message.chat_id, text=schedule_message, reply_markup=reply_markup)
+                #bot.sendMessage(chat_id=message.chat_id, text="Расписание не установлено", reply_markup=reply_markup)
+                #if group_id == "group1":
+                #    bot.sendMessage(chat_id=message.chat_id, text="Расписание не установлено", reply_markup=reply_markup)
+                #elif group_id == "group2":
+                #    bot.sendMessage(chat_id=message.chat_id, text="Среда, с 19:30 до 20:00", reply_markup=reply_markup)
+                #else:
+                #    schedule_message = get_schedule_message()
+                #    bot.sendMessage(chat_id=message.chat_id, text=schedule_message, reply_markup=reply_markup)
+                schedule_message = get_schedule_message()
+                bot.sendMessage(chat_id=message.chat_id, text=schedule_message, reply_markup=reply_markup)
+
             elif (group_id == "admin" or group_id == "teacher") and message.text == "/send" :
                 state = "SEND_STATE"
                 reply_markup = '{"keyboard" : [["/news", "/homework", "/cancel"]], "resize_keyboard" : true}'
@@ -421,6 +446,10 @@ def run(bot, logfile, slackbot):
                 if message.text == "/confirm":
                     _, _, group, message_id = state.split()
                     forward_broad(bot, from_chat_id=message.chat_id, message_id=message_id, group=group)
+                    # Update news after broadcasting
+                    with db_session:
+                        chat = Chat.get(chat_id=message.chat.id)
+                        news = chat.news
                     bot.sendMessage(chat_id=message.chat_id, text="Отправлено!", reply_markup=reply_markup)
                     state = "MAIN_STATE"
                 else:
@@ -430,8 +459,8 @@ def run(bot, logfile, slackbot):
 
         with db_session:
             chat = Chat.get(chat_id=message.chat.id)
-            chat.primary_id, chat.group_id, chat.state, chat.silent_mode, chat.deleted, chat.realname = \
-                primary_id, group_id, state, silent_mode, deleted, realname
+            chat.primary_id, chat.group_id, chat.state, chat.silent_mode, chat.deleted, chat.realname, chat.news = \
+                primary_id, group_id, state, silent_mode, deleted, realname, news
 
         LAST_UPDATE_ID = update.update_id + 1
 
